@@ -27,6 +27,20 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.',
+    'Approximately one quarter of human bones are in the feet.',
+    'A slug\'s blood is green.'
+  ];
+
+  List<bool> answers = [false, true, true];
+
+  int questionNumber = 0;
+
+//   question1: 'You can lead a cow down stairs but not up stairs.', false,
+// question2: 'Approximately one quarter of human bones are in the feet.', true,
+// question3: 'A slug\'s blood is green.', true,
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,7 +53,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[0],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -63,12 +77,12 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  scoreKeeper.add(Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ));
-                });
+                // setState(() {
+                //   scoreKeeper.add(Icon(
+                //     Icons.check,
+                //     color: Colors.green,
+                //   ));
+                // });
 
                 //The user picked true.
               },
@@ -88,12 +102,12 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  scoreKeeper.add(Icon(
-                    Icons.close,
-                    color: Colors.red,
-                  ));
-                });
+                // setState(() {
+                //   scoreKeeper.add(Icon(
+                //     Icons.close,
+                //     color: Colors.red,
+                //   ));
+                // });
 
                 //The user picked false.
               },
