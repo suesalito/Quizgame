@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/questionbank.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() => runApp(Quizzler());
 
@@ -34,12 +36,50 @@ class _QuizPageState extends State<QuizPage> {
   ];
 
   List<bool> answers = [false, true, true];
+  List<bool> useranswer = [];
 
   int questionNumber = 0;
+  int scoreTotal = 0;
 
-//   question1: 'You can lead a cow down stairs but not up stairs.', false,
-// question2: 'Approximately one quarter of human bones are in the feet.', true,
-// question3: 'A slug\'s blood is green.', true,
+  QuestionBank questionBank = QuestionBank();
+
+  void checkAnswer(bool userPicked) {
+    setState(() {
+      print(questionBank.getQuestionNumber());
+
+      bool correctAnswer = questionBank.getQuestionsAnswer();
+
+      if (correctAnswer == userPicked) {
+        scoreTotal++;
+        print('user got it right.');
+        print(scoreTotal);
+
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        print('user got it wrong.');
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+      }
+      if (questionBank.isfinished() == true) {
+        Alert(context: context, title: "Finished", desc: "You have finished the Quiz. \n Your score is $scoreTotal .")
+            .show();
+        questionBank.resetQuestionNumber();
+        scoreKeeper = [];
+        scoreTotal = 0;
+      } else {
+        questionBank.nextQuestion();
+      }
+    });
+  }
+
+  // static Question q1 = Question(q: 'You can lead a cow down stairs but not up stairs.', a: false);
+  // static Question q2 = Question(q: 'Approximately one quarter of human bones are in the feet.', a: true);
+  // static Question q3 = Question(q: 'A slug\'s blood is green.', a: true);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +93,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[0],
+                questionBank.getQuestionsText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -77,13 +117,8 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                // setState(() {
-                //   scoreKeeper.add(Icon(
-                //     Icons.check,
-                //     color: Colors.green,
-                //   ));
-                // });
-
+                //print(questionBank.getQuestionNumber());
+                checkAnswer(true);
                 //The user picked true.
               },
             ),
@@ -102,12 +137,8 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                // setState(() {
-                //   scoreKeeper.add(Icon(
-                //     Icons.close,
-                //     color: Colors.red,
-                //   ));
-                // });
+                //print(questionBank.getQuestionNumber());
+                checkAnswer(false);
 
                 //The user picked false.
               },
